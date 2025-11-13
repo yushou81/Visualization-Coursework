@@ -1,0 +1,59 @@
+# OS / 编辑器
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# Python / Flask
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+*.log
+*.sqlite3
+*.db
+*.pid
+.coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+instance/
+.env
+.env.*
+env/
+venv/
+backend/venv/
+
+# 构建产物
+build/
+dist/
+
+# Node / 前端
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+frontend/dist/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# 数据集（体积较大）
+InsiderThreatData/ITD-2018 Data Set/
+InsiderThreatData/*.zip
+InsiderThreatData/*.rar
+InsiderThreatData/*.7z
+
+# 杂项
+*.bak
+*.tmp
+*.orig
+*.tgz
+*.tar
