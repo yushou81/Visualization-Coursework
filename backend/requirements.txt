@@ -1,0 +1,6 @@
+flask
+pymysql
+flask-sqlalchemy
+flask-cors
+GitPython
+gunicorn
