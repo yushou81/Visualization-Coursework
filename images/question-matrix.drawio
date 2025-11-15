@@ -1,0 +1,58 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.0.2">
+  <diagram id="questionMatrix" name="问题矩阵">
+    <mxGraphModel dx="1453" dy="657" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="题目任务 ↔ 字段 ↔ 数据源" style="text;html=1;fontSize=24;fontStyle=1;strokeColor=none;fillColor=none" parent="1" vertex="1">
+          <mxGeometry x="460" y="40" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="headerProblem" value="问题类别" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="180" y="120" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="headerFields" value="关键字段" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="380" y="120" width="360" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="headerSource" value="数据来源" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=16;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="740" y="120" width="360" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="row1Problem" value="数据泄露路径" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="180" y="180" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="row1Fields" value="邮件主题/收发人&lt;br&gt;TCP uplink/downlink&lt;br&gt;岗位等级、部门" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="380" y="180" width="360" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="row1Source" value="email.csv、tcpLog.csv&lt;br&gt;辅助：backend/部门职位.csv、link 表" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="740" y="180" width="360" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="row2Problem" value="异常通信对" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="180" y="280" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="row2Fields" value="登录/访问 IP、端口、协议&lt;br&gt;host 域名标签&lt;br&gt;登录结果 state" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="380" y="280" width="360" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="row2Source" value="login.csv、weblog.csv；标签来自 weblog_record、DomainClassifier" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="740" y="280" width="360" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="row3Problem" value="敏感文件外发" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="180" y="380" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="row3Fields" value="邮件主题关键词（方案/源码）&lt;br&gt;时间戳 vs 打卡时间&lt;br&gt;附件流量" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="380" y="380" width="360" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="row3Source" value="email.csv、tcpLog.csv&lt;br&gt;辅助：checking.csv（checkin/checkout）" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="740" y="380" width="360" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="row4Problem" value="缺勤但远程访问" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="180" y="480" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="row4Fields" value="打卡记录、VPN/login 时间&lt;br&gt;host=VPN、proto=ssh&lt;br&gt;部门/岗位" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="380" y="480" width="360" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="row4Source" value="checking.csv、login.csv、weblog.csv&lt;br&gt;辅助：link 表映射部门" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="740" y="480" width="360" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

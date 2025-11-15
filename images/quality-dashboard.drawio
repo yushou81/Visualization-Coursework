@@ -1,0 +1,34 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.0.2">
+  <diagram id="qualityDashboard" name="质量监控看板">
+    <mxGraphModel dx="1384" dy="626" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="导入批次监控" style="text;html=1;fontSize=24;fontStyle=1;strokeColor=none;fillColor=none" parent="1" vertex="1">
+          <mxGeometry x="520" y="30" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="paneMissing" value="字段缺失率" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="180" y="120" width="420" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="paneTimeline" value="批次耗时/异常" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="640" y="120" width="420" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="paneCoverage" value="题目覆盖度" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="1100" y="120" width="420" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="chartMissing" value="&lt;b&gt;缺失率 (%)&lt;/b&gt;&lt;br/&gt;weblog host: 21.40&lt;br/&gt;login time/user: 0.00&lt;br/&gt;tcpLog stime/dtime: 0.00&lt;br/&gt;email subject: 0.00" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;fontSize=16" parent="1" vertex="1">
+          <mxGeometry x="220" y="160" width="340" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="chartTimeline" value="&lt;b&gt;异动统计&lt;/b&gt;&lt;br/&gt;login: offhour 2,469 | weekend 1,171&lt;br/&gt;weblog: offhour 4,557 | weekend 4,324&lt;br/&gt;tcpLog: offhour 35,057&lt;br/&gt;email: offhour 1,371 | sensitive 0" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;fontSize=16" parent="1" vertex="1">
+          <mxGeometry x="690" y="130" width="340" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="chartCoverage" value="&lt;b&gt;覆盖度&lt;/b&gt;&lt;br/&gt;组织结构: 299 员工&lt;br/&gt;IP 映射: 313 人&lt;br/&gt;weblog 部门: 6 类&lt;br/&gt;夜间登录用户: 249" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;fontSize=16" parent="1" vertex="1">
+          <mxGeometry x="1140" y="160" width="340" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="数据来源: import_dataset.py 日志 + 静态 JSON 指标" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#999;fillColor=#f5f5f5" parent="1" vertex="1">
+          <mxGeometry x="500" y="420" width="600" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

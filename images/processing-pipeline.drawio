@@ -1,0 +1,55 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.0.2">
+  <diagram id="processingPipeline" name="数据处理流水线">
+    <mxGraphModel dx="1816" dy="821" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="原始 CSV → import_dataset.py → 数据库/静态资源" style="text;html=1;fontSize=24;fontStyle=1;strokeColor=none;fillColor=none" parent="1" vertex="1">
+          <mxGeometry x="550" y="27" width="580" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="rawFiles" value="原始日志 CSV&lt;br&gt;backend/InsiderThreatData/ITD-2018 Data Set" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="450" y="95" width="320" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="stepLoad" value="1. 加载映射&lt;br&gt;部门/职位、IP、depart code" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="470" y="290" width="280" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="stepIngest" value="2. 导入日志表&lt;br&gt;email / weblog / login / tcpLog / checking2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="450" y="480" width="320" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="stepDomain" value="3. 域名归一/标签&lt;br&gt;DomainClassifier、weblog_record" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14" parent="1" vertex="1">
+          <mxGeometry x="880" y="480" width="320" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="dbOutputs" value="MySQL 输出&lt;br&gt;link、department、email、weblog、login、tcpLog、checking2、weblog_record" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666;fontSize=13" parent="1" vertex="1">
+          <mxGeometry x="440" y="672" width="340" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="jsonOutputs" value="静态 JSON&lt;br&gt;ip_id.json、1284.json、weblog_record_groups.json" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13" parent="1" vertex="1">
+          <mxGeometry x="880" y="692" width="320" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="vizOutputs" value="可视化&lt;div&gt;前端 Vue 图表 / Word 报告&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cce5ff;strokeColor=#5b9bd5;fontSize=13" parent="1" vertex="1">
+          <mxGeometry x="660" y="902" width="320" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" value="读取 CSV" style="endArrow=classic;html=1;strokeColor=#6c8ebf" parent="1" source="rawFiles" target="stepLoad" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" value="映射准备" style="endArrow=classic;html=1;strokeColor=#d6b656" parent="1" source="stepLoad" target="stepIngest" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" value="写入表" style="endArrow=classic;html=1;strokeColor=#82b366" parent="1" source="stepIngest" target="stepDomain" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" value="输出" style="endArrow=classic;html=1;strokeColor=#666" parent="1" source="stepIngest" target="dbOutputs" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" value="聚合结果" style="endArrow=classic;html=1;strokeColor=#b85450" parent="1" source="stepDomain" target="jsonOutputs" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" value="数据供给" style="endArrow=classic;html=1;strokeColor=#5b9bd5" parent="1" source="dbOutputs" target="vizOutputs" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" value="静态资源" style="endArrow=classic;html=1;strokeColor=#9673a6" parent="1" source="jsonOutputs" target="vizOutputs" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

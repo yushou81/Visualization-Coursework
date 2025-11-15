@@ -1,0 +1,59 @@
+{
+  "missing_rates": {
+    "login": {
+      "time": 0.0,
+      "user": 0.0,
+      "proto": 0.0,
+      "sip": 0.0,
+      "dip": 0.0,
+      "state": 0.0
+    },
+    "weblog": {
+      "time": 0.0,
+      "sip": 0.0,
+      "host": 21.39597850853071
+    },
+    "tcpLog": {
+      "stime": 0.0,
+      "dtime": 0.0,
+      "proto": 0.0,
+      "sip": 0.0,
+      "dip": 0.0
+    },
+    "email": {
+      "time": 0.0,
+      "from": 0.0,
+      "to": 0.0,
+      "subject": 0.0
+    },
+    "checking": {
+      "day": 0.0,
+      "id": 0.0,
+      "checkin": 0.0,
+      "checkout": 0.0
+    }
+  },
+  "extra_stats": {
+    "login": {
+      "offhour": 2469,
+      "weekend": 1171
+    },
+    "weblog": {
+      "offhour": 4557,
+      "weekend": 4324
+    },
+    "tcpLog": {
+      "offhour": 35057
+    },
+    "email": {
+      "offhour": 1371,
+      "sensitive_subject": 0
+    }
+  },
+  "coverage": {
+    "organization_employees": 299,
+    "ip_mapped_users": 313,
+    "weblog_departments": 6,
+    "offhour_users": 249
+  }
+}
