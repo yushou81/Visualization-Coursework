@@ -6,6 +6,7 @@
 
 <script>
 import * as echarts from 'echarts'
+import request from '@/utils/request'
 
 
 export default {
@@ -13,6 +14,7 @@ export default {
   data() {
     return {
       chartOrgan: "",
+      orgOption: null
     }
   },
   mounted: function() {
@@ -77,7 +79,7 @@ export default {
       ];
     }
 
-    var orgOption = {
+    this.orgOption = {
 
       title: {
         text: '员工组织结构图',
@@ -1584,7 +1586,28 @@ export default {
     };
 
     this.chartOrgan = echarts.init(document.getElementById('chartOrgan'), 'halloween')
-    this.chartOrgan.setOption(orgOption)
+
+    // 先渲染默认数据，保证有占位
+    this.chartOrgan.setOption(this.orgOption)
+
+    // 从后端获取组织结构，替换 treemap 数据
+    request.get('/users')
+      .then(res => {
+        const data = res?.data
+        if (Array.isArray(data) && data.length > 0) {
+          this.chartOrgan.setOption({
+            series: [
+              {
+                ...this.orgOption.series[0],
+                data
+              }
+            ]
+          })
+        }
+      })
+      .catch(() => {
+        // 保留默认数据，避免页面空白
+      })
 
   }
 }

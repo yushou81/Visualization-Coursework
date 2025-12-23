@@ -16,6 +16,7 @@
 
 <script>
 import * as echarts from 'echarts'
+import request from '@/utils/request'
 
 import 'echarts-wordcloud'
 
@@ -3443,15 +3444,52 @@ export default {
   mounted: function() {
     this.emailSum = echarts.init(document.getElementById('emailSum'), 'halloween')
     this.emailSum.setOption(this.EmailOption)
-    // this.positiontWord = echarts.init(document.getElementById('positiontWord'), 'halloween')
-    // this.positiontWord.setOption(this.WordOption)
-    this.emailSum.on("click", function(param) {
+
+    // 初始化两个词云图，避免空白，占位提示点击左侧节点
+    const emptyWordOption = {
+      title: { text: '点击左侧节点查看词云', left: 'center', top: 20 },
+      tooltip: {},
+      series: [{
+        type: 'wordCloud',
+        gridSize: 20,
+        sizeRange: [12, 40],
+        rotationRange: [0, 0],
+        shape: 'circle',
+        textStyle: { color: '#ccc' },
+        data: []
+      }]
+    }
+    this.positiontWord = echarts.init(document.getElementById('positiontWord'), 'halloween')
+    this.positiontWord2 = echarts.init(document.getElementById('positiontWord2'), 'halloween')
+    this.positiontWord.setOption(emptyWordOption)
+    this.positiontWord2.setOption(emptyWordOption)
+
+    this.emailSum.on("click", async (param) => {
 
       // console.log(param);
       var title = "";
       var data = [];
       var title2 = "";
       var data2 = [];
+
+      // 优先尝试后端接口 /<id> 获取词云数据
+      try {
+        const res = await request.get(`/${param?.name}`)
+        const payload = res?.data || {}
+        const sendWords = Array.isArray(payload.email_subject) ? payload.email_subject : []
+        const recvWords = Array.isArray(payload.receive_email_subject) ? payload.receive_email_subject : []
+        if (sendWords.length || recvWords.length) {
+          title = `${param.name} 发送词云`
+          data = sendWords
+          title2 = `${param.name} 接收词云`
+          data2 = recvWords
+        }
+      } catch (e) {
+        console.warn('fetch wordcloud failed', e)
+      }
+
+      // 兼容旧的本地静态映射，只有在接口没返回数据时才使用
+      if (!data.length && !data2.length) {
       if (param.name == "1067") {
         title = "总经理词云图";
         data = [{
@@ -4118,6 +4156,15 @@ export default {
         ];
 
       }
+      }
+
+      // 如果没有匹配到数据，给出占位提示，避免空白
+      if (!data.length && !data2.length) {
+        title = "暂无数据";
+        title2 = "暂无数据";
+        data = [{ name: "暂无数据", value: 1 }];
+        data2 = [{ name: "暂无数据", value: 1 }];
+      }
 
       var WordOption = {
         title: {
@@ -4191,11 +4238,13 @@ export default {
           data: data2
         }]
       };
-      var charts = echarts.init(document.getElementById('positiontWord'), 'halloween')
-      charts.setOption(WordOption)
-
-      var charts2 = echarts.init(document.getElementById('positiontWord2'), 'halloween')
-      charts2.setOption(WordOption2)
+      // 复用已初始化的词云实例，避免重复创建
+      if (this.positiontWord) {
+        this.positiontWord.setOption(WordOption, true)
+      }
+      if (this.positiontWord2) {
+        this.positiontWord2.setOption(WordOption2, true)
+      }
 
       // getPositiontWord(param.name);
     });

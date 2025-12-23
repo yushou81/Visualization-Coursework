@@ -6,6 +6,7 @@
 
 <script>
 import * as echarts from 'echarts'
+import request from '@/utils/request'
 
 export default {
   name: 'Employee',
@@ -1305,6 +1306,25 @@ export default {
   mounted: function() {
     this.chartEmp = echarts.init(document.getElementById('chartEmp'), 'halloween')
     this.chartEmp.setOption(this.depOption)
+
+    // 动态拉取 /users 构建树形结构（根节点 HighTech，子节点为后端返回的部门）
+    request.get('/users')
+      .then(res => {
+        const data = res?.data
+        if (Array.isArray(data) && data.length > 0) {
+          const total = data.reduce((sum, node) => sum + (parseInt(node.value) || 0), 0) || data.length
+          const root = { name: 'HighTech', value: total, children: data }
+          this.chartEmp.setOption({
+            series: [{
+              ...this.depOption.series[0],
+              data: [root]
+            }]
+          })
+        }
+      })
+      .catch(() => {
+        // 静态数据兜底
+      })
 
   }
 }

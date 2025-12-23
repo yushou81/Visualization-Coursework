@@ -1,63 +1,105 @@
 <template>
-<div class="table-container">
-  <el-row style="margin: 10px 0;">
-    <el-alert
+  <div class="personal-page app-container">
+    <el-card shadow="hover" class="search-card">
+      <div class="search-header">
+        <div class="title">员工信息查询</div>
+        <el-alert
           v-if="serverDown"
           title="抱歉，后台服务器已关闭，无法查询员工个人信息！"
           type="warning"
-          center
-          show-icon>
-    </el-alert>
-  </el-row>
-  <el-row>
-    <el-col :span="6" style="height:400px;border: #ccc 1px solid;">
-      <div id="input">
-        <input v-model="id" placeholder="请输入员工编号">
-        <button v-on:click="fetchData(id)">搜索一下</button>
-      </div>
-      <div id="card">
-        <p>员工编号：<span>{{id}}</span></p>
-        <p>所处部门：<span>{{data.department.department}}</span></p>
-        <p>职位：<span>{{data.department.position}}</span></p>
-        <p>工位IP：<span>{{data.ip}}</span></p>
+          show-icon
+          class="server-alert"
+        />
       </div>
 
-    </el-col>
-    <el-col :span="6" style="padding-right:10px;">
-      <div id="chartWord" class="chartBox" style="height:400px;"></div>
-    </el-col>
-    <el-col :span="6" style="padding-right:10px;">
-      <div id="emailWord" class="chartBox" style="height:400px;"></div>
-    </el-col>
-    <el-col :span="6" style="padding-right:10px;">
-      <div id="emailRecWord" class="chartBox" style="height:400px;"></div>
-    </el-col>
-  </el-row>
+      <el-row :gutter="20" align="middle">
+        <el-col :xs="24" :sm="24" :md="14" :lg="16">
+          <el-form class="search-form" @submit.prevent>
+            <el-form-item label="员工编号">
+              <el-input
+                v-model="id"
+                placeholder="请输入员工编号"
+                clearable
+                @keyup.enter="fetchData(id)"
+              />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="fetchData(id)">搜索一下</el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="10" :lg="8">
+          <div class="basic-card">
+            <div class="info-row">
+              <span class="label">员工编号</span>
+              <span class="value">{{ id || '-' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">所处部门</span>
+              <span class="value">{{ data.department.department || '-' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">职位</span>
+              <span class="value">{{ data.department.position || '-' }}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">工位IP</span>
+              <span class="value">{{ data.ip || '-' }}</span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </el-card>
 
-  <el-row style="margin-top:10px;">
+    <el-row :gutter="20" class="section-row">
+      <el-col :xs="24" :sm="12" :md="12" :lg="6">
+        <el-card shadow="hover" class="chart-card">
+          <div id="chartWord" class="chart-box medium"></div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="12" :lg="6">
+        <el-card shadow="hover" class="chart-card">
+          <div id="emailWord" class="chart-box medium"></div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="12" :lg="6">
+        <el-card shadow="hover" class="chart-card">
+          <div id="emailRecWord" class="chart-box medium"></div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="12" :lg="6">
+        <el-card shadow="hover" class="chart-card">
+          <div id="webPie" class="chart-box medium"></div>
+        </el-card>
+      </el-col>
+    </el-row>
 
-    <el-col :span="8" style="">
-      <div id="checkTime" class="chartBox" style="height:500px;margin-left:0px;"></div>
-    </el-col>
-    <el-col :span="6" style="padding-right:10px;">
-      <div id="webPie" class="chartBox" style="height:500px;"></div>
-    </el-col>
-    <el-col :span="10" style="padding-right:10px;">
-      <div id="loginParallel" class="chartBox" style="height:500px;"></div>
-    </el-col>
-  </el-row>
-  <el-row style="margin-top:10px;">
-    <el-col :span="24">
-      <div id="upDownFlow" class="chartBox" style="height:500px;margin-left:0px;"></div>
-    </el-col>
-  </el-row>
-  <el-row style="margin-top:10px;">
-    <el-col :span="24">
-      <div id="protoFlow" class="chartBox" style="height:500px;margin-left:0px;"></div>
-    </el-col>
-  </el-row>
+    <el-row :gutter="20" class="section-row">
+      <el-col :xs="24" :sm="24" :md="12" :lg="8">
+        <el-card shadow="hover" class="chart-card">
+          <div id="checkTime" class="chart-box large"></div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="12" :lg="16">
+        <el-card shadow="hover" class="chart-card">
+          <div id="loginParallel" class="chart-box large"></div>
+        </el-card>
+      </el-col>
+    </el-row>
 
-</div>
+    <el-row :gutter="20" class="section-row">
+      <el-col :xs="24" :sm="24" :md="24" :lg="12">
+        <el-card shadow="hover" class="chart-card">
+          <div id="upDownFlow" class="chart-box large"></div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="24" :lg="12">
+        <el-card shadow="hover" class="chart-card">
+          <div id="protoFlow" class="chart-box large"></div>
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -78,6 +120,8 @@ export default {
       loginParallel: "",
       webPie: '',
       checkTime: "",
+      upDownFlow: "",
+      protoFlow: "",
       id: "",
       data: {
         ip: "",
@@ -91,6 +135,15 @@ export default {
   },
   created() {},
   methods: {
+    initChart(refName, domId) {
+      if (this[refName] && this[refName].dispose) {
+        this[refName].dispose()
+      }
+      const dom = document.getElementById(domId)
+      if (!dom) return null
+      this[refName] = echarts.init(dom, 'halloween')
+      return this[refName]
+    },
     fetchData(params) {;
       if (params > 1000 && params < 1600) {
         var url = "/" + params;
@@ -167,8 +220,8 @@ export default {
         }]
       };
 
-      this.chartWord = echarts.init(document.getElementById('chartWord'), 'halloween')
-      this.chartWord.setOption(option)
+      const chart = this.initChart('chartWord', 'chartWord')
+      chart && chart.setOption(option)
     },
 
     EmailWord(params) {
@@ -209,8 +262,8 @@ export default {
         }]
       };
 
-      this.emailWord = echarts.init(document.getElementById('emailWord'), 'halloween')
-      this.emailWord.setOption(option)
+      const chart = this.initChart('emailWord', 'emailWord')
+      chart && chart.setOption(option)
     },
 
 
@@ -251,8 +304,8 @@ export default {
         }]
       };
 
-      this.emaiReclWord = echarts.init(document.getElementById('emailRecWord'), 'halloween')
-      this.emaiReclWord.setOption(option)
+      const chart = this.initChart('emailRecWord', 'emailRecWord')
+      chart && chart.setOption(option)
     },
 
 
@@ -277,8 +330,8 @@ export default {
         }]
       };
 
-      this.webPie = echarts.init(document.getElementById('webPie'), 'halloween')
-      this.webPie.setOption(option)
+      const chart = this.initChart('webPie', 'webPie')
+      chart && chart.setOption(option)
     },
 
 
@@ -329,15 +382,6 @@ export default {
           };
         });
       }
-
-      function drawPie(params) {
-        //  console.log(params);
-        pieInitialized = true;
-        params.setOption({
-          series: getPieSeries(scatterData, params)
-        });
-      }
-
 
       var scatterData = params;
       var thisTitle=this.id+"打卡上班时长日历图";
@@ -416,17 +460,15 @@ export default {
 
 
 
-      this.checkTime = echarts.init(document.getElementById('checkTime'), 'halloween')
-
-      this.checkTime.setOption(option)
-
-      if (!app.inNode) {
-        var pieInitialized;
-        setTimeout(drawPie(this.checkTime), 10);
-      }
-
-
-
+      const chart = this.initChart('checkTime', 'checkTime')
+      if (!chart) return
+      chart.setOption(option)
+      setTimeout(() => {
+        const pieSeries = getPieSeries(scatterData, chart)
+        chart.setOption({
+          series: option.series.concat(pieSeries)
+        })
+      }, 10)
     },
 
 
@@ -518,8 +560,8 @@ export default {
           }
         };
 
-        this.loginParallel = echarts.init(document.getElementById('loginParallel'), 'halloween')
-        this.loginParallel.setOption(option)
+        const chart = this.initChart('loginParallel', 'loginParallel')
+        chart && chart.setOption(option)
       })
     },
 
@@ -625,11 +667,11 @@ export default {
           series: response.data.protocols
         };
 
-        this.protoFlow = echarts.init(document.getElementById('protoFlow'), 'halloween')
-        this.protoFlow.setOption(option2)
+        const protoChart = this.initChart('protoFlow', 'protoFlow')
+        protoChart && protoChart.setOption(option2)
 
-        this.upDownFlow = echarts.init(document.getElementById('upDownFlow'), 'halloween')
-        this.upDownFlow.setOption(option)
+        const flowChart = this.initChart('upDownFlow', 'upDownFlow')
+        flowChart && flowChart.setOption(option)
       })
     },
   }
@@ -637,62 +679,106 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.table {
-    &-container {
-        margin: 10px 10px 10px -20px;
-        height: auto;
+.personal-page {
+  padding: 0;
 
-    }
-    &-text {
-        font-size: 30px;
-        line-height: 46px;
-    }
-}
-#input {
-    margin: 20px 40px;
-    input {
-        width: 70%;
-        height: 40px;
-        background-color: transparent;
-        border-top: none;
-        border-left: none;
-        border-right: none;
-        border-bottom: 2px #ff715e solid;
-        color: #ffaf51;
-        outline: none;
-        display: float;
-    }
-    button {
-        display: float;
-        width: 25%;
-        height: 40px;
-        border: none;
-        background-color: #ff715e;
-        color: #ffffff;
-        font-weight: 500;
-        outline: none;
-    }
-    button:hover {
-        background-color: #ffaf51;
-    }
-    button:focus {
-        background-color: #ff816e;
-    }
-}
+  .search-card {
+    margin-bottom: 20px;
+    border-radius: 8px;
 
-#card {
-    margin: 40px;
-    font-size: 1.2em;
-    font-weight: 500;
-    color: #ffaf51;
-    span {
-        color: #ff816e;
+    :deep(.el-card__body) {
+      padding: 20px;
     }
-}
+  }
 
-.chartBox {
+  .search-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #303133;
+    }
+
+    .server-alert {
+      width: 100%;
+      margin-left: 16px;
+      flex: 1;
+    }
+  }
+
+  .search-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    :deep(.el-form-item) {
+      margin-right: 12px;
+      margin-bottom: 0;
+    }
+  }
+
+  .basic-card {
+    background: #f7f9fc;
+    border: 1px solid #ebeef5;
+    border-radius: 10px;
+    padding: 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #606266;
+      font-size: 14px;
+
+      .label {
+        color: #909399;
+      }
+
+      .value {
+        color: #ff715e;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .section-row {
+    margin-top: 20px;
+  }
+
+  .chart-card {
+    height: 100%;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    :deep(.el-card__body) {
+      padding: 16px;
+    }
+  }
+
+  .chart-box {
     width: 100%;
-    border: #ccc 1px solid;
-    margin: 0 10px;
+    height: 360px;
+  }
+
+  .chart-box.medium {
+    height: 380px;
+  }
+
+  .chart-box.large {
+    height: 500px;
+  }
 }
 </style>

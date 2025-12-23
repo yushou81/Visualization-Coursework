@@ -6,7 +6,7 @@
 
 <script>
 import * as echarts from 'echarts'
-
+import request from '@/utils/request'
 
 export default {
   name: 'Department',
@@ -202,6 +202,23 @@ export default {
   mounted: function() {
     this.chartColumn = echarts.init(document.getElementById('chartColumn'), 'halloween')
     this.chartColumn.setOption(this.depOption)
+
+    // 动态拉取后端部门数据（/users 返回树形结构），替换 sunburst 数据
+    request.get('/users')
+      .then(res => {
+        const data = res?.data
+        if (Array.isArray(data) && data.length > 0) {
+          this.chartColumn.setOption({
+            series: {
+              ...this.depOption.series,
+              data
+            }
+          })
+        }
+      })
+      .catch(() => {
+        // 保持默认静态数据作为兜底
+      })
 
   }
 }

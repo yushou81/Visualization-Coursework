@@ -1,6 +1,22 @@
 <template>
   <div v-if="!item.hidden">
-    <template v-if="onlyOneChild && hasOneShowingChild(item.children, item) && (!onlyOneChild.children || onlyOneChild.noShowingChildren) && !item.alwaysShow">
+    <!-- 纯叶子节点，直接渲染菜单项 -->
+    <template v-if="isLeaf">
+      <el-menu-item 
+        :index="leafIndex"
+        :class="{'submenu-title-noDropdown': !isNest}"
+      >
+        <el-icon v-if="item.meta && item.meta.icon">
+          <component :is="item.meta.icon" />
+        </el-icon>
+        <template #title>
+          <span>{{ item.meta?.title }}</span>
+        </template>
+      </el-menu-item>
+    </template>
+
+    <!-- 只有一个可显示子节点时折叠为单项 -->
+    <template v-else-if="onlyOneChild && hasOneShowingChild(item.children, item) && (!onlyOneChild.children || onlyOneChild.noShowingChildren) && !item.alwaysShow">
       <el-menu-item 
         :index="resolvePath(onlyOneChild.path)"
         :class="{'submenu-title-noDropdown': !isNest}"
@@ -14,7 +30,8 @@
             </el-menu-item>
     </template>
 
-    <el-submenu v-else :index="resolvePath(item.path)">
+    <!-- Element Plus 子菜单组件名为 el-sub-menu（中间有连字符） -->
+    <el-sub-menu v-else :index="resolvePath(item.path)">
       <template #title>
         <el-icon v-if="item.meta && item.meta.icon">
           <component :is="item.meta.icon" />
@@ -30,7 +47,7 @@
           :is-nest="true"
         />
       </template>
-    </el-submenu>
+    </el-sub-menu>
   </div>
 </template>
 
@@ -58,6 +75,18 @@ const onlyOneChild = computed(() => {
     return null
   }
   return props.item.children[0]
+})
+
+const isLeaf = computed(() => {
+  return !Array.isArray(props.item.children) || props.item.children.length === 0
+})
+
+const leafIndex = computed(() => {
+  // basePath 在父级已传入完整路径，直接使用，避免重复拼接
+  if (props.basePath) {
+    return props.basePath
+  }
+  return resolvePath(props.item.path)
 })
 
 const hasOneShowingChild = (children = [], parent) => {

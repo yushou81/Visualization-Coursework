@@ -6,7 +6,7 @@
 
 <script>
 import * as echarts from 'echarts'
-
+import request from '@/utils/request'
 
 export default {
   name: 'Emailrel',
@@ -20,8 +20,8 @@ export default {
         x: 'left',
         padding:[10,10]
         },
-
-
+        
+        
         legend: [{
           // selectedMode: 'single',
           data: ["总经理", "部长", "组长", "普通员工"],
@@ -3431,9 +3431,39 @@ export default {
   mounted: function() {
     this.chartEmail = echarts.init(document.getElementById('chartEmail'), 'halloween')
     this.chartEmail.setOption(this.EmailOption)
-    this.chartEmail.on("click", function (param){
-          console.log(param);
-     });
+
+    // 拉取后端邮件关系数据，替换图表（/emails 返回 nodes/links/categories）
+    request.get('/emails')
+      .then(res => {
+        const payload = res?.data || {}
+        const nodes = payload.nodes || payload.data || []
+        const links = payload.links || []
+        const categories = payload.categories || []
+
+        const legendData = Array.isArray(categories)
+          ? categories.map(c => c.name || c)
+          : this.EmailOption.legend?.[0]?.data
+
+        this.chartEmail.setOption({
+          legend: [{
+            ...this.EmailOption.legend?.[0],
+            data: legendData
+          }],
+          series: [{
+            ...this.EmailOption.series[0],
+            data: Array.isArray(nodes) ? nodes : this.EmailOption.series[0].data,
+            links: Array.isArray(links) ? links : this.EmailOption.series[0].links,
+            categories: Array.isArray(categories) ? categories : this.EmailOption.series[0].categories
+          }]
+        })
+      })
+      .catch(() => {
+        // 静态数据兜底
+      })
+
+    this.chartEmail.on("click", (param) => {
+      console.log(param);
+    });
 
   }
 }
