@@ -1,28 +1,34 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
+import 'normalize.css/normalize.css'
 
-import 'normalize.css/normalize.css'// A modern alternative to CSS resets
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/en'
+import '@/styles/index.scss'
+import '@/theme/halloween'
 
-import '@/styles/index.scss' // global css
-
-import App from './App'
+import App from './App.vue'
 import router from './router'
-import store from './store'
+import { createPinia } from 'pinia'
 
-import '@/icons' // icon
-import '@/permission' // permission control
+import '@/icons'
+import '@/permission'
 
-Vue.use(ElementUI, { locale })
+const app = createApp(App)
+const pinia = createPinia()
 
-Vue.config.productionTip = false
+// Register all Element Plus icons
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 
-new Vue({
-  el: '#app',
-  router,
-  store,
-  template: '<App/>',
-  components: { App }
+app.use(ElementPlus, {
+  locale: zhCn
 })
+app.use(pinia)
+app.use(router)
+
+app.mount('#app')

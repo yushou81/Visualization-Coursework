@@ -15,10 +15,9 @@
 </template>
 
 <script>
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 
-require('echarts/theme/halloween')
-require('echarts-wordcloud')
+import 'echarts-wordcloud'
 
 export default {
   name: 'departmentcloudword',

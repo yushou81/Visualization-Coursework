@@ -1,94 +1,47 @@
 <template>
-  <el-menu class="navbar" mode="horizontal">
-    <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-    <breadcrumb></breadcrumb>
-    <!-- <el-dropdown class="avatar-container" trigger="click">
-      <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar">
-        <i class="el-icon-caret-bottom"></i>
+  <div class="navbar">
+    <Hamburger 
+      class="hamburger-container" 
+      :is-active="sidebar.opened"
+      @toggle-click="toggleSideBar"
+    />
+    <Breadcrumb />
       </div>
-      <el-dropdown-menu class="user-dropdown" slot="dropdown">
-        <router-link class="inlineBlock" to="/">
-          <el-dropdown-item>
-            主页
-          </el-dropdown-item>
-        </router-link>
-        <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">退出</span>
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown> -->
-  </el-menu>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
+<script setup>
+import { computed } from 'vue'
+import Breadcrumb from '@/components/Breadcrumb/index.vue'
+import Hamburger from '@/components/Hamburger/index.vue'
+import { useAppStore } from '@/store/modules/app'
 
-export default {
-  components: {
-    Breadcrumb,
-    Hamburger
-  },
-  computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar'
-    ])
-  },
-  methods: {
-    toggleSideBar() {
-      this.$store.dispatch('ToggleSideBar')
-    },
-    logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload() // 为了重新实例化vue-router对象 避免bug
-      })
-    }
-  }
+const appStore = useAppStore()
+const sidebar = computed(() => appStore.sidebar)
+
+const toggleSideBar = () => {
+  appStore.toggleSideBar()
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .navbar {
-  height: 50px;
-  line-height: 50px;
-  background-color: rgba(64, 64, 64, 0.5);
-  // background-image: url(../../../assets/pumpkin.png);
-  border-radius: 0px !important;
+  height: 60px;
+  overflow: hidden;
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  
   .hamburger-container {
-    line-height: 58px;
-    height: 50px;
+    line-height: 60px;
+    height: 60px;
     float: left;
-    padding: 0 10px;
-  }
-  .screenfull {
-    position: absolute;
-    right: 90px;
-    top: 16px;
-    color: red;
-  }
-  .avatar-container {
-    height: 50px;
-    display: inline-block;
-    position: absolute;
-    right: 35px;
-    .avatar-wrapper {
+    padding: 0 15px;
       cursor: pointer;
-      margin-top: 5px;
-      position: relative;
-      .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-      }
-      .el-icon-caret-bottom {
-        position: absolute;
-        right: -20px;
-        top: 25px;
-        font-size: 12px;
-      }
+    transition: background 0.3s;
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.025);
     }
   }
 }

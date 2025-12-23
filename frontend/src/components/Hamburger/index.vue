@@ -1,19 +1,29 @@
 <template>
+  <div 
+    :class="['hamburger', { 'is-active': isActive }]"
+    @click="handleClick"
+  >
+    <el-icon :size="20">
+      <Fold v-if="isActive" />
+      <Expand v-else />
+    </el-icon>
+  </div>
 </template>
 
-<script>
-export default {
-  name: 'hamburger',
-  props: {
+<script setup>
+import { Fold, Expand } from '@element-plus/icons-vue'
+
+defineProps({
     isActive: {
       type: Boolean,
       default: false
-    },
-    toggleClick: {
-      type: Function,
-      default: null
-    }
   }
+})
+
+const emit = defineEmits(['toggle-click'])
+
+const handleClick = () => {
+  emit('toggle-click')
 }
 </script>
 
@@ -21,14 +31,14 @@ export default {
 .hamburger {
     display: inline-block;
     cursor: pointer;
-    width: 20px;
-    height: 20px;
-    transform: rotate(0deg);
-    transition: .38s;
-    transform-origin: 50% 50%;
+  transition: transform 0.3s;
+  
+  &:hover {
+    opacity: 0.8;
 }
 
-.hamburger.is-active {
+  &.is-active {
     transform: rotate(90deg);
+  }
 }
 </style>

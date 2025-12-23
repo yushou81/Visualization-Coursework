@@ -1,84 +1,58 @@
+import { defineStore } from 'pinia'
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
-const user = {
-  state: {
+export const useUserStore = defineStore('user', {
+  state: () => ({
     token: getToken(),
     name: '',
     avatar: '',
     roles: []
-  },
-
-  mutations: {
-    SET_TOKEN: (state, token) => {
-      state.token = token
-    },
-    SET_NAME: (state, name) => {
-      state.name = name
-    },
-    SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
-    },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
-    }
-  },
-
+  }),
   actions: {
     // 登录
-    Login({ commit }, userInfo) {
+    async login(userInfo) {
       const username = userInfo.username.trim()
-      return new Promise((resolve, reject) => {
-        login(username, userInfo.password).then(response => {
-          console.log(response)
+      try {
+        const response = await login(username, userInfo.password)
           const data = response.data
           setToken(data.token)
-          commit('SET_TOKEN', data.token)
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
-      })
+        this.token = data.token
+      } catch (error) {
+        throw error
+      }
     },
 
     // 获取用户信息
-    GetInfo({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
+    async getInfo() {
+      try {
+        const response = await getInfo(this.token)
           const data = response.data
-          commit('SET_ROLES', data.roles)
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
+        this.roles = data.roles
+        this.name = data.name
+        this.avatar = data.avatar
+        return response
+      } catch (error) {
+        throw error
+      }
     },
 
     // 登出
-    LogOut({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
+    async logOut() {
+      try {
+        await logout(this.token)
+        this.token = ''
+        this.roles = []
           removeToken()
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
-      })
+      } catch (error) {
+        throw error
+      }
     },
 
     // 前端 登出
-    FedLogOut({ commit }) {
-      return new Promise(resolve => {
-        commit('SET_TOKEN', '')
+    fedLogOut() {
+      this.token = ''
         removeToken()
-        resolve()
-      })
     }
   }
-}
-
-export default user
+})

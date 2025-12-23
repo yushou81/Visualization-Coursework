@@ -62,11 +62,10 @@
 
 <script>
 import request from '@/utils/request'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 
-require('echarts-wordcloud')
+import 'echarts-wordcloud'
 
-require('echarts/theme/halloween')
 
 export default {
   name: 'personal',

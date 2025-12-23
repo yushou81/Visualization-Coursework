@@ -1,47 +1,93 @@
 <template>
-  <div class="menu-wrapper">
-    <template v-for="item in routes" v-if="!item.hidden&&item.children">
-
-      <router-link v-if="item.children.length===1 && !item.children[0].children && !item.alwaysShow" :to="item.path+'/'+item.children[0].path" :key="item.children[0].name">
-        <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
-          <svg-icon v-if="item.children[0].meta&&item.children[0].meta.icon" :icon-class="item.children[0].meta.icon"></svg-icon>
-          <span v-if="item.children[0].meta&&item.children[0].meta.title">{{item.children[0].meta.title}}</span>
-        </el-menu-item>
-      </router-link>
-
-      <el-submenu v-else :index="item.name||item.path" :key="item.name">
-        <template slot="title">
-          <svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
-          <span v-if="item.meta&&item.meta.title">{{item.meta.title}}</span>
+  <div v-if="!item.hidden">
+    <template v-if="onlyOneChild && hasOneShowingChild(item.children, item) && (!onlyOneChild.children || onlyOneChild.noShowingChildren) && !item.alwaysShow">
+      <el-menu-item 
+        :index="resolvePath(onlyOneChild.path)"
+        :class="{'submenu-title-noDropdown': !isNest}"
+      >
+        <el-icon v-if="onlyOneChild.meta && onlyOneChild.meta.icon">
+          <component :is="onlyOneChild.meta.icon" />
+        </el-icon>
+        <template #title>
+          <span>{{ onlyOneChild.meta?.title }}</span>
         </template>
-
-        <template v-for="child in item.children" v-if="!child.hidden">
-          <sidebar-item :is-nest="true" class="nest-menu" v-if="child.children&&child.children.length>0" :routes="[child]" :key="child.path"></sidebar-item>
-
-          <router-link v-else :to="item.path+'/'+child.path" :key="child.name">
-            <el-menu-item :index="item.path+'/'+child.path">
-              <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"></svg-icon>
-              <span v-if="child.meta&&child.meta.title">{{child.meta.title}}</span>
             </el-menu-item>
-          </router-link>
-        </template>
-      </el-submenu>
-
     </template>
+
+    <el-submenu v-else :index="resolvePath(item.path)">
+      <template #title>
+        <el-icon v-if="item.meta && item.meta.icon">
+          <component :is="item.meta.icon" />
+        </el-icon>
+        <span>{{ item.meta?.title }}</span>
+      </template>
+      <template v-if="item.children">
+        <SidebarItem
+          v-for="child in item.children"
+          :key="child.path"
+          :item="child"
+          :base-path="resolvePath(child.path)"
+          :is-nest="true"
+        />
+      </template>
+    </el-submenu>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'SidebarItem',
-  props: {
-    routes: {
-      type: Array
+<script setup>
+import { computed } from 'vue'
+import { isExternal } from '@/utils/validate'
+
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true
+  },
+  basePath: {
+    type: String,
+    default: ''
     },
     isNest: {
       type: Boolean,
-      default: true
-    }
+    default: false
   }
+})
+
+const onlyOneChild = computed(() => {
+  if (!Array.isArray(props.item.children) || props.item.children.length === 0) {
+    return null
+  }
+  return props.item.children[0]
+})
+
+const hasOneShowingChild = (children = [], parent) => {
+  if (!children || children.length === 0) {
+    return false
+  }
+  
+  const showingChildren = children.filter(item => {
+    return !item.hidden
+  })
+
+  if (showingChildren.length === 1) {
+    return true
+  }
+
+  return false
+}
+
+const resolvePath = (routePath) => {
+  if (isExternal(routePath)) {
+    return routePath
+  }
+  if (isExternal(props.basePath)) {
+    return props.basePath
+  }
+  // Simple path resolution without path module
+  if (routePath.startsWith('/')) {
+    return routePath
+  }
+  const base = props.basePath.endsWith('/') ? props.basePath.slice(0, -1) : props.basePath
+  return `${base}/${routePath}`.replace(/\/+/g, '/')
 }
 </script>

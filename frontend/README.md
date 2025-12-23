@@ -10,13 +10,16 @@
 
 <p align="left">
   <a href="https://github.com/vuejs/vue">
-    <img src="https://img.shields.io/badge/vue-2.5.10-brightgreen.svg" alt="vue">
+    <img src="https://img.shields.io/badge/vue-3.3.11-brightgreen.svg" alt="vue">
   </a>
-  <a href="https://echarts.baidu.com/">
-    <img src="https://img.shields.io/badge/echarts-4.1.0-brightgreen.svg" alt="echarts">
+  <a href="https://echarts.apache.org/">
+    <img src="https://img.shields.io/badge/echarts-5.4.3-brightgreen.svg" alt="echarts">
   </a>
-  <a href="https://github.com/ElemeFE/element">
-    <img src="https://img.shields.io/badge/element--ui-2.0.8-brightgreen.svg" alt="element-ui">
+  <a href="https://element-plus.org/">
+    <img src="https://img.shields.io/badge/element--plus-2.4.4-brightgreen.svg" alt="element-plus">
+  </a>
+  <a href="https://vitejs.dev/">
+    <img src="https://img.shields.io/badge/vite-5.0.8-brightgreen.svg" alt="vite">
   </a>
   <a href="https://github.com/zhenzhencai/ChinaVisProject/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
@@ -25,31 +28,52 @@
  chinavis2018挑战1 一等奖作品 
  含项目工程源码、演示视频、论文、答卷、项目截图
  后台服务已关闭
+
+## ✨ 升级说明
+
+项目已从 Vue 2 升级到 Vue 3，主要变更：
+- ✅ Vue 3.3.11 + Composition API
+- ✅ Element Plus（替代 Element UI）
+- ✅ Vue Router 4
+- ✅ Pinia（替代 Vuex）
+- ✅ Vite（替代 Webpack）
+- ✅ ECharts 5.4.3
+- ✅ 现代化 UI 设计
    
 ## 技术栈
-    vue2 + vuex + vue-router + webpack + axios + element-UI + ECharts + Tableau
+    Vue 3 + Pinia + Vue Router 4 + Vite + Axios + Element Plus + ECharts 5
+
+## 环境要求
+- Node.js >= 16.0.0
+- npm >= 8.0.0
 
 ## 开发
 ```bash
     # 克隆项目
     git clone https://github.com/zhenzhencai/vueAdminDemo.git
     
-    #进入文件夹
-    cd ChinaVisProject
+    # 进入文件夹
+    cd ChinaVisProject/frontend
 
     # 安装依赖
     npm install
-    //or # 建议不要用cnpm  安装有各种诡异的bug 可以通过如下操作解决npm速度慢的问题
-    npm install --registry=https://registry.npm.taobao.org
-    
-    cnpm install
-    
-    #这里需要添加echarts的两个主题文件，访问链接https://echarts.baidu.com/theme-builder/
-    #下载halloween.js主题文件，将这个文件放入node_modules/echarts/theme文件夹下
+    # 或使用 yarn
+    yarn install
 
     # 本地开发 开启服务
     npm run dev
+    # 或
+    yarn dev
 
+    # 构建生产版本
+    npm run build
+    # 或
+    yarn build
+
+    # 预览生产构建
+    npm run preview
+    # 或
+    yarn preview
 ```
 
 

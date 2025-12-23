@@ -31,3 +31,8 @@ export function validatAlphabets(str) {
   return reg.test(str)
 }
 
+/* 判断是否为外部链接*/
+export function isExternal(path) {
+  return /^(https?:|mailto:|tel:)/.test(path)
+}
+

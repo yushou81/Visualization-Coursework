@@ -1,13 +1,7 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-
-// in development-env not use lazy-loading, because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
-// detail: https://panjiachen.github.io/vue-element-admin-site/#/lazy-loading
-
-Vue.use(Router)
+import { createRouter, createWebHistory } from 'vue-router'
 
 /* Layout */
-import Layout from '../views/layout/Layout'
+import Layout from '../views/layout/Layout.vue'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -26,40 +20,53 @@ export const constantRouterMap = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    name: 'Dashboard',
+    name: 'Root',
     hidden: true,
     children: [{
       path: 'dashboard',
-      component: () => import('@/views/dashboard/index')
+      name: 'Dashboard',
+      component: () => import('@/views/dashboard/index.vue'),
+      meta: { title: '仪表盘', icon: 'dashboard' }
     }]
   },
-
   {
     path: '/example',
     component: Layout,
-    redirect: '/example/table',
+    redirect: '/example/personal',
     name: 'Example',
-    meta: { title: '分析', icon: 'example' },
+    meta: { title: '分析', icon: 'DataAnalysis' },
     children: [
       {
         path: 'personal',
         name: 'Personal',
-        component: () => import('@/views/personal/index'),
-        meta: { title: '个人', icon: 'table' }
+        component: () => import('@/views/personal/index.vue'),
+        meta: { title: '个人', icon: 'User' }
       },
       {
         path: 'department',
         name: 'Department',
-        component: () => import('@/views/department/index'),
-        meta: { title: '部门', icon: 'tree' }
+        component: () => import('@/views/department/index.vue'),
+        meta: { title: '部门', icon: 'OfficeBuilding' }
       }
     ]
   },
-  { path: '*', redirect: '/404', hidden: true }
+  {
+    path: '/404',
+    component: () => import('@/views/error/NotFound.vue'),
+    hidden: true,
+    meta: { title: '页面不存在' }
+  },
+  { 
+    path: '/:pathMatch(.*)*', 
+    redirect: '/404', 
+    hidden: true 
+  }
 ]
 
-export default new Router({
-  // mode: 'history', //后端支持可开
-  scrollBehavior: () => ({ y: 0 }),
+const router = createRouter({
+  history: createWebHistory(),
+  scrollBehavior: () => ({ top: 0 }),
   routes: constantRouterMap
 })
+
+export default router

@@ -4,24 +4,28 @@
 @import './element-ui.scss';
 @import './sidebar.scss';
 
-body {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
-}
-
-html {
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
+html,
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    'Helvetica', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Arial', sans-serif;
 }
 
-div:focus{
+#app {
+  height: 100%;
+}
+
+div:focus {
   outline: none;
 }
 
@@ -39,21 +43,34 @@ a:hover {
 }
 
 .clearfix {
-  &:after {
-    visibility: hidden;
-    display: block;
-    font-size: 0;
-    content: " ";
-    clear: both;
-    height: 0;
-  }
+  @include clearfix;
 }
 
 //main-container全局样式
-.app-main{
-  min-height: 100%
+.app-main {
+  min-height: calc(100vh - 60px);
 }
 
 .app-container {
   padding: 20px;
+}
+
+// 滚动条样式
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+  
+  &:hover {
+    background: #a8a8a8;
+  }
 }

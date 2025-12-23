@@ -1,4 +1,4 @@
-const echarts = require('echarts/lib/echarts')
+import * as echarts from 'echarts'
 
 const colorPalette = [
   '#ff6b6b',
@@ -120,6 +120,8 @@ const theme = {
   }
 }
 
-if (echarts && echarts.registerTheme) {
+if (echarts && typeof echarts.registerTheme === 'function') {
   echarts.registerTheme('halloween', theme)
 }
+
+export default theme

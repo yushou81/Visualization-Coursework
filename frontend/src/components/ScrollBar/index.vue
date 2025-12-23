@@ -1,57 +1,63 @@
 <template>
-  <div class="scroll-container" ref="scrollContainer" @wheel.prevent="handleScroll" >
-    <div class="scroll-wrapper" ref="scrollWrapper" :style="{top: top + 'px'}">
+  <div 
+    class="scroll-container" 
+    ref="scrollContainer" 
+    @wheel.prevent="handleScroll"
+  >
+    <div 
+      class="scroll-wrapper" 
+      ref="scrollWrapper" 
+      :style="{ top: top + 'px' }"
+    >
       <slot></slot>
     </div>
   </div>
 </template>
 
-<script>
-const delta = 15
+<script setup>
+import { ref } from 'vue'
 
-export default {
-  name: 'scrollBar',
-  data() {
-    return {
-      top: 0
-    }
-  },
-  methods: {
-    handleScroll(e) {
+const delta = 15
+const top = ref(0)
+const scrollContainer = ref(null)
+const scrollWrapper = ref(null)
+
+const handleScroll = (e) => {
       const eventDelta = e.wheelDelta || -e.deltaY * 3
-      const $container = this.$refs.scrollContainer
-      const $containerHeight = $container.offsetHeight
-      const $wrapper = this.$refs.scrollWrapper
-      const $wrapperHeight = $wrapper.offsetHeight
+  const container = scrollContainer.value
+  const containerHeight = container.offsetHeight
+  const wrapper = scrollWrapper.value
+  const wrapperHeight = wrapper.offsetHeight
+  
       if (eventDelta > 0) {
-        this.top = Math.min(0, this.top + eventDelta)
+    top.value = Math.min(0, top.value + eventDelta)
+  } else {
+    if (containerHeight - delta < wrapperHeight) {
+      if (top.value < -(wrapperHeight - containerHeight + delta)) {
+        // Already at bottom
       } else {
-        if ($containerHeight - delta < $wrapperHeight) {
-          if (this.top < -($wrapperHeight - $containerHeight + delta)) {
-            this.top = this.top
-          } else {
-            this.top = Math.max(this.top + eventDelta, $containerHeight - $wrapperHeight - delta)
+        top.value = Math.max(
+          top.value + eventDelta,
+          containerHeight - wrapperHeight - delta
+        )
           }
         } else {
-          this.top = 0
-        }
-      }
+      top.value = 0
     }
   }
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-@import '../../styles/variables.scss';
-
+<style lang="scss" scoped>
 .scroll-container {
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: $menuBg;
+  background-color: #304156;
+  
   .scroll-wrapper {
     position: absolute;
-     width: 100%!important;
+    width: 100% !important;
   }
 }
 </style>

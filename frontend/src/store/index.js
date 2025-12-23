@@ -1,17 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import app from './modules/app'
-import user from './modules/user'
-import getters from './getters'
+// Pinia stores are imported directly where needed
+// This file is kept for compatibility but stores are now in modules/
 
-Vue.use(Vuex)
-
-const store = new Vuex.Store({
-  modules: {
-    app,
-    user
-  },
-  getters
-})
-
-export default store
+export { useAppStore } from './modules/app'
+export { useUserStore } from './modules/user'

@@ -5,8 +5,7 @@
 </template>
 
 <script>
-import echarts from 'echarts'
-require('echarts/theme/halloween')
+import * as echarts from 'echarts'
 
 export default {
   name: 'Employee',

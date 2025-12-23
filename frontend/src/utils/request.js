@@ -1,33 +1,37 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+import { ElMessage } from 'element-plus'
+import { getToken } from '@/utils/auth'
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: process.env.BASE_API, // api的base_url
-  timeout: 15000 // 请求超时时间
+  baseURL: import.meta.env.VITE_BASE_API || '/api',
+  timeout: 15000
 })
 
 // request拦截器
-service.interceptors.request.use(config => {
-  // if (store.getters.token) {
-  //   config.headers['X-Token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-  // }
+service.interceptors.request.use(
+  config => {
+    const token = getToken()
+    if (token) {
+      config.headers['X-Token'] = token
+    }
   return config
-}, error => {
-  // Do something with request error
-  console.log(error) // for debug
-  Promise.reject(error)
-})
+  },
+  error => {
+    console.log(error)
+    return Promise.reject(error)
+  }
+)
 
-// respone拦截器
+// response拦截器
 service.interceptors.response.use(
   response => {
     return response
   },
   error => {
-    console.log('err' + error)// for debug
-    Message({
-      message: error.message,
+    console.log('err' + error)
+    ElMessage({
+      message: error.message || '请求失败',
       type: 'error',
       duration: 5 * 1000
     })
