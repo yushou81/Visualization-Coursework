@@ -5,9 +5,9 @@
       :default-active="activeMenu"
       :collapse="isCollapse"
       :unique-opened="true"
-      background-color="#304156"
-      text-color="#bfcbd9"
-      active-text-color="#409eff"
+      background-color="#0B3042"
+      text-color="#d4d4d4"
+      active-text-color="#437C8F"
       router
     >
       <SidebarItem 
@@ -52,6 +52,20 @@ const activeMenu = computed(() => {
 :deep(.el-menu) {
   border: none;
   height: 100%;
-  width: 100% !important;
+  width: 100%;
+}
+
+:deep(.el-menu--collapse) {
+  width: 54px !important;
+  
+  .el-menu-item,
+  .el-submenu__title {
+    padding-left: 20px !important;
+    padding-right: 0 !important;
+    
+    .el-icon {
+      margin-right: 0 !important;
+    }
+  }
 }
 </style>

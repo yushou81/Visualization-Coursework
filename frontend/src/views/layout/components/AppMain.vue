@@ -23,7 +23,7 @@ const key = computed(() => route.path)
   position: relative;
   overflow: hidden;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.95);
+  background: #d4d4d4;
   backdrop-filter: blur(10px);
   border-radius: 8px 0 0 0;
   margin-top: 60px;

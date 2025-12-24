@@ -50,14 +50,23 @@ import { Departmentcloudword } from '@/views/department/components'
     margin-bottom: 20px;
     border-radius: 8px;
     transition: all 0.3s;
+    border: 1px solid #d4d4d4;
+    background: #ffffff;
     
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 20px rgba(11, 48, 66, 0.15);
+      border-color: #437C8F;
     }
     
     :deep(.el-card__body) {
       padding: 20px;
+    }
+    
+    :deep(.el-card__header) {
+      background: #0B3042;
+      color: #ffffff;
+      border-bottom: 2px solid #437C8F;
     }
   }
   

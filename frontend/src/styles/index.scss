@@ -4,6 +4,8 @@
 @import './element-ui.scss';
 @import './sidebar.scss';
 
+// 全局颜色变量可在所有组件中使用
+
 * {
   margin: 0;
   padding: 0;
@@ -62,15 +64,15 @@ a:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: $primary-light;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
+  background: $primary-medium;
   border-radius: 4px;
   
   &:hover {
-    background: #a8a8a8;
+    background: darken($primary-medium, 10%);
   }
 }

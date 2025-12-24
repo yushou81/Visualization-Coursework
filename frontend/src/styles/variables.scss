@@ -1,4 +1,21 @@
-//sidebar
-$menuBg:#304156;
-$subMenuBg:#1f2d3d;
-$menuHover:#001528;
+// Color Palette
+$primary-dark: #0B3042;    // 深蓝/深灰 - 主色
+$primary-medium: #437C8F;  // 中蓝 - 辅助色
+$primary-light: #d4d4d4;   // 浅灰 - 背景/文字
+$primary-accent: #0B3042;  // 强调色（与主色相同）
+
+// Sidebar colors
+$menuBg: $primary-dark;
+$subMenuBg: darken($primary-dark, 5%);
+$menuHover: $primary-medium;
+
+// Background colors
+$bg-primary: $primary-light;
+$bg-secondary: lighten($primary-light, 5%);
+$bg-card: #ffffff;
+
+// Text colors
+$text-primary: $primary-dark;
+$text-secondary: $primary-medium;
+$text-light: $primary-light;
+$text-white: #ffffff;

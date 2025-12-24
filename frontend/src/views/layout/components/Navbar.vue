@@ -28,20 +28,22 @@ const toggleSideBar = () => {
   height: 60px;
   overflow: hidden;
   position: relative;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(10px);
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 12px 0 rgba(11, 48, 66, 0.15);
+  border-bottom: 1px solid #d4d4d4;
   
   .hamburger-container {
     line-height: 60px;
     height: 60px;
     float: left;
     padding: 0 15px;
-      cursor: pointer;
+    cursor: pointer;
     transition: background 0.3s;
+    color: #0B3042;
     
     &:hover {
-      background: rgba(0, 0, 0, 0.025);
+      background: rgba(67, 124, 143, 0.1);
     }
   }
 }

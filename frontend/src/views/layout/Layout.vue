@@ -25,7 +25,7 @@ const sidebar = computed(() => appStore.sidebar)
   position: relative;
   height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0B3042 0%, #437C8F 100%);
   background-attachment: fixed;
   
   &::before {
@@ -38,7 +38,7 @@ const sidebar = computed(() => appStore.sidebar)
     background-image: url(@/assets/pumpkin.png);
     background-size: cover;
     background-position: center;
-    opacity: 0.1;
+    opacity: 0.05;
     z-index: 0;
   }
   
@@ -49,6 +49,7 @@ const sidebar = computed(() => appStore.sidebar)
     left: 0;
     z-index: 1001;
     transition: width 0.28s;
+    width: 210px;
   }
   
   .main-container {
@@ -61,7 +62,7 @@ const sidebar = computed(() => appStore.sidebar)
   
   &.hideSidebar {
     .sidebar-container {
-      width: 54px;
+      width: 54px !important;
     }
     
     .main-container {

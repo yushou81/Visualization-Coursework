@@ -1,6 +1,6 @@
 <template>
 <div class="checktime">
-  <div id="checktime" style="width:100%; height:500px;"></div>
+  <div id="checktime" class="chart-container"></div>
 </div>
 </template>
 
@@ -605,14 +605,41 @@ export default {
   mounted: function() {
     this.checktime = echarts.init(document.getElementById('checktime'), 'halloween')
     this.checktime.setOption(this.depOption)
-
+    
+    // 监听窗口大小变化，自动调整图表尺寸
+    this.resizeHandler = () => {
+      if (this.checktime) {
+        this.checktime.resize()
+      }
+    }
+    window.addEventListener('resize', this.resizeHandler)
+  },
+  beforeUnmount: function() {
+    // 清理 resize 监听器
+    if (this.resizeHandler) {
+      window.removeEventListener('resize', this.resizeHandler)
+    }
+    // 销毁图表实例
+    if (this.checktime) {
+      this.checktime.dispose()
+      this.checktime = null
+    }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .checktime {
+    width: 100%;
+    height: 100%;
     border: #ccc 1px solid;
     margin-right: 10px;
+    position: relative;
+    
+    .chart-container {
+      width: 100%;
+      height: 100%;
+      min-height: 500px;
+    }
 }
 </style>
