@@ -4,17 +4,36 @@
       <SvgIcon name="tree" class="icon" />
       <span class="title">{{ title }}</span>
     </div>
-    <Breadcrumb />
+    <el-menu
+      mode="horizontal"
+      :default-active="activePath"
+      background-color="transparent"
+      text-color="#e5e7eb"
+      active-text-color="#fbbf24"
+      class="menu"
+      router
+    >
+      <el-menu-item v-for="item in menuItems" :key="item.path" :index="item.path">
+        <SvgIcon v-if="item.meta?.icon" :name="item.meta.icon as string" class="icon" />
+        <span>{{ item.meta?.title || item.path }}</span>
+      </el-menu-item>
+    </el-menu>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import Breadcrumb from '@/components/Breadcrumb.vue'
+import { useRoute, useRouter, RouteRecordRaw } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
+
 const title = computed(() => route.meta.title || '页面')
+const activePath = computed(() => route.path)
+const menuItems = computed<RouteRecordRaw[]>(() => {
+  const base = router.getRoutes().find((r) => r.path === '/')
+  return base?.children?.filter((c) => !c.meta?.hidden) || []
+})
 </script>
 
 <style scoped>
@@ -42,5 +61,9 @@ const title = computed(() => route.meta.title || '页面')
 
 .icon {
   color: #fbbf24;
+}
+
+.menu {
+  border-bottom: none;
 }
 </style>

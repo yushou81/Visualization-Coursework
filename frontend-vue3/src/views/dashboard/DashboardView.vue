@@ -5,12 +5,12 @@
     </el-row>
     <Departmentcloudword />
     <el-row style="margin-top: 10px">
-      <el-col :span="6">
+      <el-col :span="10">
         <el-row>
           <Department />
         </el-row>
       </el-col>
-      <el-col :span="18" style="padding-right: 10px">
+      <el-col :span="14" style="padding-right: 10px">
         <Organization />
       </el-col>
     </el-row>
