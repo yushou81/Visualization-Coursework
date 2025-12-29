@@ -7,7 +7,7 @@ from .views import view
 from .chinavis_data import data
 
 
-DEFAULT_DB_URI = 'mysql+pymysql://chinavis:123456@127.0.0.1/chinavis'
+DEFAULT_DB_URI = 'mysql+pymysql://root:12345678@127.0.0.1/chinavis'
 
 
 def _bool_env(name: str, default: bool = False) -> bool:

@@ -1,24 +1,17 @@
 <template>
 <div class="tcplog">
-  <div id="tcpLog" style="width:100%; height:500px;"></div>
+  <div ref="tcpLogRef" style="width:100%; height:500px;"></div>
 </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import * as echarts from 'echarts'
 
-import '@/theme/halloween'
+const tcpLogRef = ref<HTMLElement | null>(null)
+let tcpLog: echarts.ECharts | null = null
 
-export default {
-  name: 'Tcplog',
-  data() {
-    return {
-      tcpLog: "",
-
-
-    }
-  },
-  mounted: function() {
+onMounted(() => {
 
     var dataMap = {};
 
@@ -1665,11 +1658,11 @@ export default {
     };
 
 
-    this.tcpLog = echarts.init(document.getElementById('tcpLog'), 'halloween')
-    this.tcpLog.setOption(option)
-
+  if (tcpLogRef.value) {
+    tcpLog = echarts.init(tcpLogRef.value, 'halloween')
+    tcpLog.setOption(option)
   }
-}
+})
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

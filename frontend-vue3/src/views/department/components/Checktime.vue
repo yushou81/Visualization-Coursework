@@ -1,20 +1,17 @@
 <template>
 <div class="checktime">
-  <div id="checktime" style="width:100%; height:500px;"></div>
+  <div ref="checktimeRef" style="width:100%; height:500px;"></div>
 </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import * as echarts from 'echarts'
 
-import '@/theme/halloween'
+const checktimeRef = ref<HTMLElement | null>(null)
+let checktime: echarts.ECharts | null = null
 
-export default {
-  name: 'Checktime',
-  data() {
-    return {
-      checktime: "",
-      depOption: {
+const depOption = {
         title: {
           text: '工作日上下班打卡人数',
           //subtext: '人力部门',
@@ -600,15 +597,12 @@ export default {
         ]
       }
 
-
-    }
-  },
-  mounted: function() {
-    this.checktime = echarts.init(document.getElementById('checktime'), 'halloween')
-    this.checktime.setOption(this.depOption)
-
+onMounted(() => {
+  if (checktimeRef.value) {
+    checktime = echarts.init(checktimeRef.value, 'halloween')
+    checktime.setOption(depOption)
   }
-}
+})
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

@@ -1,20 +1,17 @@
 <template>
 <div class="playball">
-  <div id="playball" style="width:100%; height:500px;"></div>
+  <div ref="playballRef" style="width:100%; height:500px;"></div>
 </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import * as echarts from 'echarts'
 
-import '@/theme/halloween'
+const playballRef = ref<HTMLElement | null>(null)
+let playball: echarts.ECharts | null = null
 
-export default {
-  name: 'playball',
-  data() {
-    return {
-      playball: "",
-      depOption: {
+const depOption = {
         title: {
           text: '每周打球活动参与情况',
           padding: [10, 10]
@@ -672,17 +669,14 @@ export default {
             }
           }
         }]
-      }
-
-
-    }
-  },
-  mounted: function() {
-    this.playball = echarts.init(document.getElementById('playball'), 'halloween')
-    this.playball.setOption(this.depOption)
-
-  }
 }
+
+onMounted(() => {
+  if (playballRef.value) {
+    playball = echarts.init(playballRef.value, 'halloween')
+    playball.setOption(depOption)
+  }
+})
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

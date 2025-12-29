@@ -1,20 +1,17 @@
 <template>
 <div class="checkdep">
-  <div id="checkdep" style="width:100%; height:500px;"></div>
+  <div ref="checkdepRef" style="width:100%; height:500px;"></div>
 </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import * as echarts from 'echarts'
 
-import '@/theme/halloween'
+const checkdepRef = ref<HTMLElement | null>(null)
+let checkdep: echarts.ECharts | null = null
 
-export default {
-  name: 'Checkdep',
-  data() {
-    return {
-      checkdep: "",
-      checkOption: {
+const checkOption = {
         title: {
           text: '11月各部门每日打卡人数',
 
@@ -56,7 +53,7 @@ export default {
               normal: {
                 show: true,
                 position: 'insideRight',
-                formatter: function(x) {
+                formatter: function(x:any) {
                   console.log(x);
                   if (x.data > 10) {
                     return x.data;
@@ -77,7 +74,7 @@ export default {
               normal: {
                 show: true,
                 position: 'insideRight',
-                formatter: function(x) {
+                formatter: function(x:any) {
                   console.log(x);
                   if (x.data > 10) {
                     return x.data;
@@ -98,7 +95,7 @@ export default {
               normal: {
                 show: true,
                 position: 'insideRight',
-                formatter: function(x) {
+                formatter: function(x:any) {
                   console.log(x);
                   if (x.data > 10) {
                     return x.data;
@@ -119,7 +116,7 @@ export default {
               normal: {
                 show: true,
                 position: 'insideRight',
-                formatter: function(x) {
+                formatter: function(x:any) {
                   console.log(x);
                   if (x.data > 10) {
                     return x.data;
@@ -140,7 +137,7 @@ export default {
               normal: {
                 show: true,
                 position: 'insideRight',
-                formatter: function(x) {
+                formatter: function(x:any) {
                   console.log(x);
                   if (x.data > 10) {
                     return x.data;
@@ -154,25 +151,19 @@ export default {
             data: [62, 60, 61, 0, 6, 59, 61, 60, 61, 61, 7, 0, 61, 61, 62, 62, 62, 5, 0, 61, 60, 62, 62, 62, 3, 0, 62, 61, 61, 61],
           }
         ]
-      }
-
-
-    }
-  },
-  mounted: function() {
-
-
-
-
-
-    this.checkdep = echarts.init(document.getElementById('checkdep'), 'halloween')
-
-    this.checkdep.setOption(this.checkOption)
-
-
-
-  }
 }
+
+onMounted(() => {
+
+
+
+
+
+  if (checkdepRef.value) {
+    checkdep = echarts.init(checkdepRef.value, 'halloween')
+    checkdep.setOption(checkOption)
+  }
+})
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

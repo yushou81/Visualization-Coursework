@@ -1,20 +1,17 @@
 <template>
 <div class="usaupload">
-  <div id="usaupload" style="width:100%; height:500px;"></div>
+  <div ref="usauploadRef" style="width:100%; height:500px;"></div>
 </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import * as echarts from 'echarts'
 
-import '@/theme/halloween'
+const usauploadRef = ref<HTMLElement | null>(null)
+let usaupload: echarts.ECharts | null = null
 
-export default {
-  name: 'usaupload',
-  data() {
-    return {
-      usaupload: "",
-      depOption: {
+const depOption = {
         title: {
           text: "五人团伙泄密事件",
           padding: [10, 10]
@@ -108,17 +105,14 @@ export default {
             ["30日17:19", "1151", "10.64.105.73", "10.50.50.49", "10.7.133.16", "13.250.177.223", "19MB"]
           ]
         }
-      }
-
-
-    }
-  },
-  mounted: function() {
-    this.usaupload = echarts.init(document.getElementById('usaupload'), 'halloween')
-    this.usaupload.setOption(this.depOption)
-
-  }
 }
+
+onMounted(() => {
+  if (usauploadRef.value) {
+    usaupload = echarts.init(usauploadRef.value, 'halloween')
+    usaupload.setOption(depOption)
+  }
+})
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

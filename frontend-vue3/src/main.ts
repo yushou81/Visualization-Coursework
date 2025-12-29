@@ -7,6 +7,7 @@ import pinia from './store'
 import './styles/index.scss'
 import 'virtual:svg-icons-register'
 import SvgIcon from './components/SvgIcon.vue'
+import './theme/halloween' // 注册 ECharts 主题
 
 const app = createApp(App)
 

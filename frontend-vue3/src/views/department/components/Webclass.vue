@@ -1,20 +1,17 @@
 <template>
 <div class="webclass">
-  <div id="webClass" style="width:100%; height:500px;"></div>
+  <div ref="webClassRef" style="width:100%; height:500px;"></div>
 </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import * as echarts from 'echarts'
 
-import '@/theme/halloween'
+const webClassRef = ref<HTMLElement | null>(null)
+let webClass: echarts.ECharts | null = null
 
-export default {
-  name: 'Webclass',
-  data() {
-    return {
-      webClass: "",
-      depOption: {
+const depOption = {
 
         title: {
           text: '访问域名类别占比',
@@ -1670,16 +1667,14 @@ export default {
       //     },
       //
          ]
-       }
-
-    }
-  },
-  mounted: function() {
-    this.webClass = echarts.init(document.getElementById('webClass'), 'halloween')
-    this.webClass.setOption(this.depOption)
-
-  }
 }
+
+onMounted(() => {
+  if (webClassRef.value) {
+    webClass = echarts.init(webClassRef.value, 'halloween')
+    webClass.setOption(depOption)
+  }
+})
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
