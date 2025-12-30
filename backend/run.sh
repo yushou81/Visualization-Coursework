@@ -17,6 +17,6 @@ source "$VENV_PATH"
 export FLASK_APP="${FLASK_APP:-setup.py}"
 export FLASK_ENV="${FLASK_ENV:-development}"
 HOST="${FLASK_RUN_HOST:-0.0.0.0}"
-PORT="${FLASK_RUN_PORT:-5000}"
+PORT="${FLASK_RUN_PORT:-5001}"
 
 exec flask run --host="$HOST" --port="$PORT" "$@"
