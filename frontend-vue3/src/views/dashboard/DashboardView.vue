@@ -15,10 +15,10 @@
       </el-col>
     </el-row>
     <el-row style="margin-top: 10px">
-      <el-col :span="12">
+      <el-col :span="10">
         <Employee />
       </el-col>
-      <el-col :span="12" style="padding-right: 10px">
+      <el-col :span="14" style="padding-right: 10px">
         <Emailrel />
       </el-col>
     </el-row>

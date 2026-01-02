@@ -3442,7 +3442,6 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .emailrel {
     border: #ccc 1px solid;
-    margin-top: 10px;
-
+    margin-left: 10px;
 }
 </style>
