@@ -1,6 +1,6 @@
 <template>
 <div class="organization">
-  <div id="chartOrgan" style="width:100%; height:1010px;"></div>
+  <div id="chartOrgan" class="chart-container"></div>
 </div>
 </template>
 
@@ -13,6 +13,9 @@ export default {
   data() {
     return {
       chartOrgan: "",
+      wheelListeners: [],
+      mutationObserver: null,
+      renderLogCount: 0
     }
   },
   mounted: function() {
@@ -112,10 +115,11 @@ export default {
         name: 'HighTech',
         type: 'treemap',
         visibleMin: 300,
-        left:20,
-        top:50,
-        right:20,
-        bottom:30,
+        nodeClick: false,  // 禁用点击后的默认放大/下钻行为
+        left:10,
+        top:60,
+        right:10,
+        bottom:10,
         label: {
           show: true,
           formatter: '{b}',
@@ -1583,9 +1587,133 @@ export default {
       }]
     };
 
-    this.chartOrgan = echarts.init(document.getElementById('chartOrgan'), 'halloween')
+    const chartElement = document.getElementById('chartOrgan')
+    
+    if (!chartElement) {
+      return
+    }
+    
+    this.chartOrgan = echarts.init(chartElement, 'halloween')
     this.chartOrgan.setOption(orgOption)
 
+    // 监听窗口大小变化，自动调整图表大小
+    window.addEventListener('resize', this.handleResize)
+    
+    // 添加点击事件监听
+    this.setupClickHandlers()
+    
+    // 禁用鼠标滚轮 - 监听多个元素
+    this.setupWheelPrevention(chartElement)
+  },
+  beforeUnmount() {
+    // 清理事件监听和图表实例
+    if (this.chartOrgan) {
+      window.removeEventListener('resize', this.handleResize)
+      this.chartOrgan.dispose()
+      this.chartOrgan = null
+    }
+    // 移除滚轮事件监听
+    this.removeWheelPrevention()
+  },
+  methods: {
+    handleResize() {
+      if (this.chartOrgan) {
+        this.chartOrgan.resize()
+      }
+    },
+    setupClickHandlers() {
+      if (!this.chartOrgan) {
+        return
+      }
+      
+      // 监听 ECharts 的点击事件（已通过 nodeClick: false 禁用默认行为）
+      // 如果需要自定义点击处理，可以在这里添加
+    },
+    setupWheelPrevention(container) {
+      // 存储已添加监听的元素，方便后续清理
+      this.wheelListeners = []
+      
+      // 1. 监听图表容器 div
+      if (container) {
+        container.addEventListener('wheel', this.preventWheel, { passive: false })
+        this.wheelListeners.push({ element: container, type: 'div' })
+      }
+      
+      // 2. 监听父容器 .organization
+      const orgContainer = this.$el || document.querySelector('.organization')
+      if (orgContainer) {
+        orgContainer.addEventListener('wheel', this.preventWheel, { passive: false })
+        this.wheelListeners.push({ element: orgContainer, type: 'organization' })
+      }
+      
+      // 3. 延迟获取 canvas 元素（ECharts 创建 canvas 可能需要时间）
+      setTimeout(() => {
+        const canvasElements = container?.querySelectorAll('canvas')
+        
+        if (canvasElements && canvasElements.length > 0) {
+          canvasElements.forEach((canvas, index) => {
+            canvas.addEventListener('wheel', this.preventWheel, { passive: false })
+            this.wheelListeners.push({ element: canvas, type: `canvas-${index}` })
+          })
+        }
+      }, 100)
+      
+      // 4. 使用 MutationObserver 监听 canvas 元素的创建
+      if (container) {
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+              if (node.nodeName === 'CANVAS') {
+                node.addEventListener('wheel', this.preventWheel, { passive: false })
+                this.wheelListeners.push({ element: node, type: 'canvas-dynamic' })
+              }
+            })
+          })
+        })
+        
+        observer.observe(container, { childList: true, subtree: true })
+        this.mutationObserver = observer
+      }
+    },
+    removeWheelPrevention() {
+      // 移除所有滚轮事件监听
+      if (this.wheelListeners && this.wheelListeners.length > 0) {
+        this.wheelListeners.forEach((listener) => {
+          listener.element.removeEventListener('wheel', this.preventWheel)
+        })
+        this.wheelListeners = []
+      }
+      
+      // 停止 MutationObserver
+      if (this.mutationObserver) {
+        this.mutationObserver.disconnect()
+        this.mutationObserver = null
+      }
+    },
+    preventWheel(e) {
+      // 阻止滚轮事件的默认行为
+      e.preventDefault()
+      e.stopPropagation()
+    },
+    checkChartStatus() {
+      // 图表状态检查方法（已移除日志）
+    },
+    isCanvasEmpty(canvas) {
+      try {
+        const ctx = canvas.getContext('2d')
+        const imageData = ctx.getImageData(0, 0, Math.min(canvas.width, 100), Math.min(canvas.height, 100))
+        const data = imageData.data
+        // 检查是否有非透明像素
+        for (let i = 3; i < data.length; i += 4) {
+          if (data[i] !== 0) {
+            return false // 有非透明像素，不是空的
+          }
+        }
+        return true // 全部透明，可能是空的
+      } catch (e) {
+        return 'unknown'
+      }
+    }
   }
 }
 </script>
@@ -1594,6 +1722,17 @@ export default {
 .organization {
     border: #ccc 1px solid;
     margin-left: 10px;
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+    position: relative;
+    overflow: visible;
+}
 
+.chart-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: visible;
 }
 </style>

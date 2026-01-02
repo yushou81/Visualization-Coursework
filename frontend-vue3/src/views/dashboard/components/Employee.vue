@@ -1,6 +1,6 @@
 <template>
 <div class="employee">
-  <div id="chartEmp" style="width:100%; height:800px;"></div>
+  <div id="chartEmp" class="chart-container"></div>
 </div>
 </template>
 
@@ -1307,6 +1307,22 @@ export default {
     this.chartEmp = echarts.init(document.getElementById('chartEmp'), 'halloween')
     this.chartEmp.setOption(this.depOption)
 
+    // 监听窗口大小变化，自动调整图表大小
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeUnmount() {
+    // 清理事件监听和图表实例
+    if (this.chartEmp) {
+      window.removeEventListener('resize', this.handleResize)
+      this.chartEmp.dispose()
+    }
+  },
+  methods: {
+    handleResize() {
+      if (this.chartEmp) {
+        this.chartEmp.resize()
+      }
+    }
   }
 }
 </script>
@@ -1314,6 +1330,17 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .employee {
     border: #ccc 1px solid;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    position: relative;
+}
 
+.chart-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 </style>
