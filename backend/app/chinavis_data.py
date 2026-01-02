@@ -10,17 +10,20 @@ base_dir = os.path.dirname(__file__) + '/json_statics/'
 
 
 def _raw_db_settings():
+    # 雖然保留了上面的解析邏輯，但我們在下面直接強制填入正確的賬號密碼
     default_uri = os.environ.get('CHINAVIS_DB_URI', 'mysql+pymysql://chinavis:123456@127.0.0.1/chinavis')
     uri = os.environ.get('CHINAVIS_RAW_DB_URI', default_uri)
     parsed = urlparse(uri)
+
     return {
-        'host': os.environ.get('RAW_DB_HOST', parsed.hostname or '127.0.0.1'),
-        'port': int(os.environ.get('RAW_DB_PORT', parsed.port or 3306)),
-        'user': os.environ.get('RAW_DB_USER', unquote(parsed.username or 'chinavis')),
-        'password': os.environ.get('RAW_DB_PASS', unquote(parsed.password or '123456')),
-        'database': os.environ.get('RAW_DB_NAME', parsed.path.lstrip('/') or 'chinavis'),
+        'host': '127.0.0.1',            # 強制指定本機
+        'port': 3306,                   # 強制指定端口
+        'user': 'root',                 # 【重點】改成你的用戶名 root
+        'password': 'Houxiaoli0830',    # 【重點】改成你的密碼
+        'database': 'chinavis',         # 數據庫名
         'charset': 'utf8mb4'
     }
+
 
 
 def _create_raw_connection():
